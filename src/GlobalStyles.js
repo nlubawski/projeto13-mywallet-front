@@ -50,9 +50,6 @@ table {
 }
 *{
 	box-sizing: border-box;
-	font-family: 'Lexend Deca', sans-serif;
-	//font-family: 'Playball', cursive;
 }
 `
-
 export default GlobalStyle
