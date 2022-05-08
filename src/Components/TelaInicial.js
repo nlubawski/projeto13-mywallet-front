@@ -1,51 +1,43 @@
-import { useState} from "react";
-import styled from "styled-components";
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import styled from "styled-components";
+//import UsuarioContext from './contextos/UsuarioContext'
 
+function TelaInicial() {
 
-function TelaCadastro() {
-  const [name, setName] = useState("");
+  //const {setUsuario,setImagem} = useContext(UsuarioContext)
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [senha, setSenha] = useState("");
+
   const navigate = useNavigate();
 
-  function cadastrar(event) {
+  function fazerLogin(event) {
     event.preventDefault();
 
-    const URL =
-      "http://localhost:5000/sign-up";
 
-    const promise = axios.post(URL, {
-      name,
-      email,
-      password,
+    const URL = "http://localhost:5000/sign-in";
+    const promisse = axios.post(URL,{
+        email,
+        password: senha
     });
 
-    promise.then((response) => {
-      const { data } = { response };
-      console.log(data);
-      //navigate('/')
+    promisse.then((response) => {
+      const { data } = response;
+      //setUsuario(data.token)
+      navigate('/usuario')
     });
-    promise.catch((err) => {
-      console.log(err.response)
 
+    promisse.catch((err) => {
+      console.log(err);
+      alert("falha no login, tente novamente ou cadastre-se");
     });
   }
 
   return (
     <>
       <Container>
-        
-        <Formulario onSubmit={cadastrar}>
-          <Input
-            type="text"
-            placeholder="Nome"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+        <Formulario onSubmit={fazerLogin}>
           <Input
             type="email"
             placeholder="Email"
@@ -57,20 +49,12 @@ function TelaCadastro() {
             type="password"
             placeholder="Senha"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
           />
-          <Input
-            type="password"
-            placeholder="Confirme sua senha"
-            required
-            value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-          />
-          <Botao type="submit">Entrar
-          </Botao>
+          <Botao type="submit">Entrar</Botao>
           <Texto>
-            <Link to="/">Já tem uma conta? Entre agora!</Link>
+            <Link to="/cadastro">Primeira vez? Cadastre-se!</Link>
           </Texto>
         </Formulario>
       </Container>
@@ -85,7 +69,6 @@ const Container = styled.div`
   align-items: center;
   min-height: 100vh;
   background-color: #8C11BE;
-
 `;
 
 const Formulario = styled.form`
@@ -135,4 +118,4 @@ const Texto = styled.p`
   }
 `;
 
-export default TelaCadastro;
+export default TelaInicial;
