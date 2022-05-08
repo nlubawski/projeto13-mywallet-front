@@ -1,23 +1,55 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect, useSyncExternalStore } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import {RiLogoutBoxRLine} from "react-icons/ri"
 import {AiOutlinePlusCircle} from "react-icons/ai"
 import {AiOutlineMinusCircle} from "react-icons/ai"
-
-//import UsuarioContext from './contextos/UsuarioContext'
+import UsuarioContext from './context/UsuarioContext'
 
 function Usuario(){
-
+  const { user } = useContext(UsuarioContext);
+  const {name} = useContext(UsuarioContext)
+  const {email} = useContext(UsuarioContext)
+  const navigate = useNavigate();
+  const  [extract,setExtract] = useState({})
   function logout(){
     console.log("saaaair");
   }
 
+  function extrato() {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user}`,
+      },
+    };
+    const URL =
+      "http://localhost:5000/extrato";
+
+    const promisse = axios.get(URL, config);
+
+    promisse.then((response) => {
+      const { data } = response;
+      setExtract(data);
+      navigate("/usuario")
+    });
+
+    promisse.catch((err) => {
+      console.log(err.response);
+      console.log("fracasso");
+    });
+  }
+
+  console.log("nome", name)
+
+  useEffect(() => {
+    extrato();
+  }, []);
+
   return (
     <Container>
       <Topo>
-      <Texto>Olá, Fulano</Texto><RiLogoutBoxRLine  size={25} color={"white"} onClick={logout}/>
+      <Texto>Olá, {name}</Texto><RiLogoutBoxRLine  size={25} color={"white"} onClick={logout}/>
       </Topo>
       <Principal></Principal>
       <Inferior>

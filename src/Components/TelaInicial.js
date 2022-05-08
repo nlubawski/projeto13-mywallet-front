@@ -2,12 +2,12 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-//import UsuarioContext from './contextos/UsuarioContext'
+import UsuarioContext from './context/UsuarioContext'
 
 function TelaInicial() {
 
-  //const {setUsuario,setImagem} = useContext(UsuarioContext)
-  const [email, setEmail] = useState("");
+  const {setUser, setName, setEmail} = useContext(UsuarioContext)
+  const [emailValue, setEmailValue] = useState("");
   const [senha, setSenha] = useState("");
 
   const navigate = useNavigate();
@@ -18,14 +18,16 @@ function TelaInicial() {
 
     const URL = "http://localhost:5000/sign-in";
     const promisse = axios.post(URL,{
-        email,
+        email: emailValue,
         password: senha
     });
 
     promisse.then((response) => {
       const { data } = response;
-      //setUsuario(data.token)
-      navigate('/usuario')
+      setUser(data.password);
+      setName(data.name);
+      setEmail(data.email)
+      navigate('/usuario');
     });
 
     promisse.catch((err) => {
@@ -33,6 +35,8 @@ function TelaInicial() {
       alert("falha no login, tente novamente ou cadastre-se");
     });
   }
+
+  
 
   return (
     <>
@@ -42,8 +46,8 @@ function TelaInicial() {
             type="email"
             placeholder="Email"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={emailValue}
+            onChange={(e) => setEmailValue(e.target.value)}
           />
           <Input
             type="password"

@@ -6,18 +6,16 @@ import TelaInicial from "./TelaInicial";
 import TelaUsuario from "./TelaUsuario";
 import TelaEntrada from "./TelaEntrada";
 import TelaSaida from "./TelaSaida";
-
-
-//import UsuarioContext from './contextos/UsuarioContext'
-//<UsuarioContext.Provider  value={{usuario, setUsuario}} >
-//
+import UsuarioContext from "./context/UsuarioContext";
 
 function App(){
-    const [usuario, setUsuario] = useState({})
+    const [user, setUser] = useState({})
+    const [name, setName] = useState({})
+    const [email, setEmail] = useState({})
     return (
         <>
         <GlobalStyle />
-        
+        <UsuarioContext.Provider  value={{user, setUser, name, setName, email, setEmail}} >
         <BrowserRouter>
         <Routes>
             <Route path="/cadastro" element={<TelaCadastro />} />
@@ -27,6 +25,7 @@ function App(){
             <Route path="/saida" element={<TelaSaida />} />
         </Routes>
         </BrowserRouter>
+        </UsuarioContext.Provider>
         </>
     )
 }

@@ -2,9 +2,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
-
-
-//import UsuarioContext from './contextos/UsuarioContext'
+import UsuarioContext from "./context/UsuarioContext";
 
 function TelaEntrada(){
 
@@ -18,7 +16,7 @@ function TelaEntrada(){
   return (
     <Container>
       <Topo>
-      <Texto>Olá, Fulano</Texto>
+      <Texto>Olá, jjj</Texto>
       </Topo>
       <Formulario onSubmit={salvarEntrada}>
           <Input
