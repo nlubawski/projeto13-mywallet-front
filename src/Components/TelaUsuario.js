@@ -21,8 +21,8 @@ function Usuario(){
       </Topo>
       <Principal></Principal>
       <Inferior>
-        <Botao><AiOutlinePlusCircle size={22} color={"white"} /> Nova Entrada</Botao>
-        <Botao><AiOutlineMinusCircle size={22} color={"white"} />Nova Saida</Botao>
+        <Link to="/entrada"><Botao><AiOutlinePlusCircle size={22} color={"white"} /> Nova Entrada</Botao></Link>
+        <Link to="/saida"><Botao><AiOutlineMinusCircle size={22} color={"white"} />Nova Saida</Botao></Link>
       </Inferior>
 
     </Container>
