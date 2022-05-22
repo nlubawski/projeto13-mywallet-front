@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect, useSyncExternalStore } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import {RiLogoutBoxRLine} from "react-icons/ri"
@@ -7,12 +7,12 @@ import {AiOutlinePlusCircle} from "react-icons/ai"
 import {AiOutlineMinusCircle} from "react-icons/ai"
 import UsuarioContext from './context/UsuarioContext'
 
+
 function Usuario(){
-  const { user } = useContext(UsuarioContext);
+  const { token } = useContext(UsuarioContext);
   const {name} = useContext(UsuarioContext)
-  const {email} = useContext(UsuarioContext)
-  const navigate = useNavigate();
   const  [extract,setExtract] = useState({})
+
   function logout(){
     console.log("saaaair");
   }
@@ -20,18 +20,17 @@ function Usuario(){
   function extrato() {
     const config = {
       headers: {
-        Authorization: `Bearer ${user}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     const URL =
       "http://localhost:5000/extrato";
 
     const promisse = axios.get(URL, config);
-
     promisse.then((response) => {
       const { data } = response;
+      console.log("extrato", extract)
       setExtract(data);
-      navigate("/usuario")
     });
 
     promisse.catch((err) => {
@@ -39,8 +38,6 @@ function Usuario(){
       console.log("fracasso");
     });
   }
-
-  console.log("nome", name)
 
   useEffect(() => {
     extrato();
@@ -51,7 +48,20 @@ function Usuario(){
       <Topo>
       <Texto>Olá, {name}</Texto><RiLogoutBoxRLine  size={25} color={"white"} onClick={logout}/>
       </Topo>
-      <Principal></Principal>
+      <Principal>
+        {extract.length > 0 ? 
+          extract.map((item, index) => {
+            const {type, date, description, value} = item;
+            return (
+              <Extrato key={index}>
+                <h1>data= {date}</h1>
+                <h1>descrição= {description}</h1>
+                <h1>valor= {value}</h1>
+              </Extrato>
+            )
+          })
+        : <>Nada ainda</>}
+      </Principal>
       <Inferior>
         <Link to="/entrada"><Botao><AiOutlinePlusCircle size={22} color={"white"} /> Nova Entrada</Botao></Link>
         <Link to="/saida"><Botao><AiOutlineMinusCircle size={22} color={"white"} />Nova Saida</Botao></Link>
@@ -132,5 +142,16 @@ const Botao = styled.button`
   flex-direction: column;
   padding: 9px;
 `;
+const Extrato = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 80%;
+  margin-bottom: 12px;
 
+`
 export default Usuario;
+
+
+

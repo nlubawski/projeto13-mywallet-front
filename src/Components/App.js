@@ -9,13 +9,13 @@ import TelaSaida from "./TelaSaida";
 import UsuarioContext from "./context/UsuarioContext";
 
 function App(){
-    const [user, setUser] = useState({})
+    const [token, setToken] = useState({})
     const [name, setName] = useState({})
     const [email, setEmail] = useState({})
     return (
         <>
         <GlobalStyle />
-        <UsuarioContext.Provider  value={{user, setUser, name, setName, email, setEmail}} >
+        <UsuarioContext.Provider  value={{token, setToken, name, setName, email, setEmail}} >
         <BrowserRouter>
         <Routes>
             <Route path="/cadastro" element={<TelaCadastro />} />

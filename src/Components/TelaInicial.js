@@ -6,38 +6,30 @@ import UsuarioContext from './context/UsuarioContext'
 
 function TelaInicial() {
 
-  const {setUser, setName, setEmail} = useContext(UsuarioContext)
+  const {setToken, setName, setEmail} = useContext(UsuarioContext)
   const [emailValue, setEmailValue] = useState("");
   const [senha, setSenha] = useState("");
-
   const navigate = useNavigate();
 
   function fazerLogin(event) {
     event.preventDefault();
-
-
     const URL = "http://localhost:5000/sign-in";
     const promisse = axios.post(URL,{
         email: emailValue,
         password: senha
     });
-
     promisse.then((response) => {
       const { data } = response;
-      setUser(data.password);
+      setToken(data.token);
       setName(data.name);
       setEmail(data.email)
       navigate('/usuario');
     });
-
     promisse.catch((err) => {
       console.log(err);
       alert("falha no login, tente novamente ou cadastre-se");
     });
   }
-
-  
-
   return (
     <>
       <Container>

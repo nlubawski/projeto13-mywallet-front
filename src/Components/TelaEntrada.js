@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import UsuarioContext from "./context/UsuarioContext";
@@ -8,15 +8,38 @@ function TelaEntrada(){
 
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
-
-  function salvarEntrada(){
-    console.log("salvar entrada");
+  const {token, name} = useContext(UsuarioContext)
+  const server = "http://localhost:5000/extrato";
+  const navigate = useNavigate();
+  const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
   }
+
+    function salvarEntrada (event) {
+        event.preventDefault();
+        const body = {
+          description, 
+          type: "deposit",
+          value: parseFloat(value)
+        };
+        const promise = axios.post(server,body,config)
+        promise.then(response => {
+            const {data} = response;
+            console.log(data);
+            alert("Registro feito com sucesso!");
+            navigate("/usuario");
+        });
+        promise.catch(error => {
+            alert("Falha no envio dos dados, por favor tente novamente");
+        })
+    }
 
   return (
     <Container>
       <Topo>
-      <Texto>Olá, jjj</Texto>
+      <Texto>Olá, {name}</Texto>
       </Topo>
       <Formulario onSubmit={salvarEntrada}>
           <Input
@@ -34,8 +57,7 @@ function TelaEntrada(){
             onChange={(e) => setDescription(e.target.value)}
           />
           <Botao type="submit">Salvar Entrada</Botao>
-         </Formulario>
-
+        </Formulario>
 
     </Container>
   )
